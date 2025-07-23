@@ -25,7 +25,7 @@ const Navigation = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/20 dark:border-white/10 shadow-lg"
+      className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/20 dark:border-white/10 shadow-lg safe-area-top"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
@@ -149,7 +149,8 @@ const Navigation = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 transition-colors p-2"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 transition-colors p-2 tap-target touch-manipulation"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
             >
               <motion.div
                 animate={{ rotate: isOpen ? 180 : 0 }}
@@ -172,11 +173,11 @@ const Navigation = () => {
             transition={{ duration: 0.3 }}
             className="md:hidden glass-card border-t border-white/20 dark:border-white/10"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-2 pt-2 pb-3 space-y-1 safe-area-bottom">
               <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
                 <Link
                   to="/"
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  className={`block px-3 py-3 rounded-md text-base font-medium tap-target touch-manipulation ${
                     isActive('/') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 hover:bg-white/20 dark:hover:bg-white/10'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -188,7 +189,7 @@ const Navigation = () => {
               <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
                 <Link
                   to="/products"
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  className={`block px-3 py-3 rounded-md text-base font-medium tap-target touch-manipulation ${
                     isActive('/products') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 hover:bg-white/20 dark:hover:bg-white/10'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -200,7 +201,7 @@ const Navigation = () => {
               <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }}>
                 <Link
                   to="/about"
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  className={`block px-3 py-3 rounded-md text-base font-medium tap-target touch-manipulation ${
                     isActive('/about') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 hover:bg-white/20 dark:hover:bg-white/10'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -212,7 +213,7 @@ const Navigation = () => {
               <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }}>
                 <Link
                   to="/contact"
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  className={`block px-3 py-3 rounded-md text-base font-medium tap-target touch-manipulation ${
                     isActive('/contact') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 hover:bg-white/20 dark:hover:bg-white/10'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -234,7 +235,7 @@ const Navigation = () => {
                       href={product.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 hover:bg-white/20 dark:hover:bg-white/10 rounded-md"
+                      className="flex items-center space-x-2 px-3 py-3 text-sm text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-cyan-400 hover:bg-white/20 dark:hover:bg-white/10 rounded-md tap-target touch-manipulation"
                       onClick={() => setIsOpen(false)}
                     >
                       <IconComponent className="w-4 h-4" />

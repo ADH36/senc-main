@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Clock, Send, User, MessageSquare, Globe, Shield, Zap, Users } from 'lucide-react';
+import MobileContact from '@/components/MobileContact';
+import { useMobile } from '@/hooks/useMobile';
 
 const Contact = () => {
   const fadeInUp = {
@@ -38,6 +40,8 @@ const Contact = () => {
     setFormData({ name: '', email: '', company: '', subject: '', message: '' });
   };
 
+  const mobile = useMobile();
+
   const contactInfo = [
     {
       icon: Mail,
@@ -64,6 +68,13 @@ const Contact = () => {
       description: 'We\'re here to help'
     }
   ];
+
+  const mobileContactInfo = {
+    phone: '+1 (555) 123-4567',
+    email: 'contact@senc.com',
+    address: 'San Francisco, CA, United States',
+    whatsapp: '+1 (555) 123-4567'
+  };
 
   const departments = [
     {
@@ -161,6 +172,25 @@ const Contact = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Mobile Contact Section */}
+      {mobile.isMobile && (
+        <section className="py-16 bg-white dark:bg-gray-800 transition-colors duration-300">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+                Quick Contact
+              </h2>
+              <MobileContact contactInfo={mobileContactInfo} />
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Contact Form and Departments */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">

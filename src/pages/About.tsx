@@ -1,6 +1,21 @@
-import { Users, Target, Eye, Heart, Award, Globe, Zap, Shield } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Users, Target, Eye, Heart, Award, Globe, Zap, Shield, Star, Trophy } from 'lucide-react';
 
 const About = () => {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 }
+  };
+
+  const staggerContainer = {
+    animate: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   const values = [
     {
       icon: Zap,
@@ -87,96 +102,190 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-900 to-cyan-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-600 dark:from-gray-900 dark:via-blue-900 dark:to-cyan-800 text-white py-20 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+            className="absolute top-10 left-10 w-20 h-20 border border-white/20 rounded-full"
+          />
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-20 right-20 w-32 h-32 border border-cyan-400/30 rounded-full"
+          />
+          <motion.div
+            animate={{ y: [-20, 20, -20] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-1/2 right-1/4 w-4 h-4 bg-cyan-400/50 rounded-full blur-sm"
+          />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About SENC
+              About <span className="gradient-text">SENC</span>
             </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+            <p className="text-xl text-blue-100 dark:text-gray-300 max-w-3xl mx-auto">
               We are a technology company dedicated to creating innovative solutions that transform industries and empower businesses worldwide.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-gray-800 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <div className="flex items-center">
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-16"
+          >
+            <motion.div 
+              variants={fadeInUp}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="glass-card p-8 group flex items-center"
+            >
               <div>
                 <div className="flex items-center mb-6">
-                  <Target className="h-8 w-8 text-cyan-600 mr-3" />
-                  <h2 className="text-3xl font-bold text-blue-900">Our Mission</h2>
+                  <motion.div 
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Target className="h-8 w-8 text-cyan-600 mr-3" />
+                  </motion.div>
+                  <h2 className="text-3xl font-bold text-blue-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">Our Mission</h2>
                 </div>
-                <p className="text-lg text-gray-600 leading-relaxed">
+                <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                   To empower businesses and individuals with cutting-edge technology solutions that drive innovation, enhance productivity, and create meaningful impact across diverse industries.
                 </p>
               </div>
-            </div>
+            </motion.div>
             
-            <div className="flex items-center">
+            <motion.div 
+              variants={fadeInUp}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="glass-card p-8 group flex items-center"
+            >
               <div>
                 <div className="flex items-center mb-6">
-                  <Eye className="h-8 w-8 text-cyan-600 mr-3" />
-                  <h2 className="text-3xl font-bold text-blue-900">Our Vision</h2>
+                  <motion.div 
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Eye className="h-8 w-8 text-cyan-600 mr-3" />
+                  </motion.div>
+                  <h2 className="text-3xl font-bold text-blue-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">Our Vision</h2>
                 </div>
-                <p className="text-lg text-gray-600 leading-relaxed">
+                <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                   To be the global leader in technology innovation, creating a future where advanced solutions seamlessly integrate into everyday life and business operations.
                 </p>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-cyan-600 mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-gray-600 font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+          >
+            {[
+              { icon: Users, number: '50K+', label: 'Active Users', color: 'from-blue-500 to-cyan-500' },
+              { icon: Trophy, number: '200+', label: 'Projects Completed', color: 'from-yellow-500 to-orange-500' },
+              { icon: Globe, number: '50+', label: 'Countries Served', color: 'from-green-500 to-emerald-500' },
+              { icon: Star, number: '99.9%', label: 'Uptime', color: 'from-purple-500 to-pink-500' }
+            ].map((stat, index) => {
+              const IconComponent = stat.icon;
+              return (
+                <motion.div key={index} variants={fadeInUp} className="text-center group">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 360 }}
+                    className={`flex items-center justify-center w-16 h-16 bg-gradient-to-r ${stat.color} rounded-full mx-auto mb-4 shadow-glow`}
+                  >
+                    <IconComponent className="w-8 h-8 text-white" />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ delay: index * 0.1 + 0.5, type: "spring" }}
+                    className="text-4xl md:text-5xl font-bold text-cyan-600 dark:text-cyan-400 mb-2"
+                  >
+                    {stat.number}
+                  </motion.div>
+                  <div className="text-gray-600 dark:text-gray-300 font-medium">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
       </section>
 
       {/* Values Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-gray-800 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 dark:text-white mb-4">
               Our Core Values
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               These fundamental principles guide our decisions and shape our company culture.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
             {values.map((value, index) => {
               const IconComponent = value.icon;
               return (
-                <div key={index} className="text-center group">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-900 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <motion.div 
+                  key={index} 
+                  variants={fadeInUp}
+                  whileHover={{ y: -10, scale: 1.05 }}
+                  className="glass-card p-6 text-center group cursor-pointer"
+                >
+                  <motion.div 
+                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-16 h-16 bg-gradient-to-r from-blue-900 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow"
+                  >
                     <IconComponent className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-blue-900 mb-3">{value.title}</h3>
-                  <p className="text-gray-600">{value.description}</p>
-                </div>
+                  </motion.div>
+                  <h3 className="text-xl font-semibold text-blue-900 dark:text-white mb-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">{value.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">{value.description}</p>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 

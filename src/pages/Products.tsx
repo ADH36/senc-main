@@ -1,8 +1,23 @@
 import { useState } from 'react';
-import { ArrowRight, Gamepad2, Brain, Palette, CreditCard, ExternalLink, Star, Users, Globe, Shield } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Gamepad2, Brain, Palette, CreditCard, ExternalLink, Star, Users, Globe, Shield, Zap } from 'lucide-react';
 
 const Products = () => {
   const [activeCategory, setActiveCategory] = useState('all');
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 }
+  };
+
+  const staggerContainer = {
+    animate: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
 
   const categories = [
     { id: 'all', name: 'All Products' },
@@ -68,18 +83,37 @@ const Products = () => {
     : products.filter(product => product.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Header Section */}
-      <section className="bg-gradient-to-r from-blue-900 to-cyan-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+      <section className="relative bg-gradient-to-r from-blue-900 to-cyan-600 dark:from-gray-900 dark:via-blue-900 dark:to-cyan-800 text-white py-20 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+            className="absolute top-10 right-10 w-20 h-20 border border-white/20 rounded-full"
+          />
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-20 left-20 w-32 h-32 border border-cyan-400/30 rounded-full"
+          />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Our Product Portfolio
+              Our <span className="gradient-text">Product Portfolio</span>
             </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+            <p className="text-xl text-blue-100 dark:text-gray-300 max-w-3xl mx-auto">
               Discover our comprehensive suite of innovative solutions designed to transform industries and drive technological advancement.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -107,13 +141,21 @@ const Products = () => {
       {/* Products Grid */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+          >
             {filteredProducts.map((product) => {
               const IconComponent = product.icon;
               return (
-                <div
+                <motion.div
                   key={product.id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+                  variants={fadeInUp}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="glass-card rounded-2xl overflow-hidden group cursor-pointer"
                 >
                   {/* Product Image */}
                   <div className="h-64 bg-gradient-to-r from-blue-900 to-cyan-600 relative overflow-hidden">
@@ -124,11 +166,15 @@ const Products = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div className="absolute bottom-4 left-4 flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                      <motion.div 
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.5 }}
+                        className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-glow"
+                      >
                         <IconComponent className="h-6 w-6 text-white" />
-                      </div>
+                      </motion.div>
                       <div>
-                        <h3 className="text-xl font-bold text-white">{product.title}</h3>
+                        <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">{product.title}</h3>
                         <p className="text-blue-200 text-sm">{categories.find(c => c.id === product.category)?.name}</p>
                       </div>
                     </div>
@@ -136,34 +182,49 @@ const Products = () => {
 
                   {/* Product Content */}
                   <div className="p-8">
-                    <p className="text-gray-600 mb-6 leading-relaxed">
+                    <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                       {product.longDescription}
                     </p>
 
                     {/* Features */}
                     <div className="mb-6">
-                      <h4 className="text-lg font-semibold text-blue-900 mb-3">Key Features</h4>
+                      <h4 className="text-lg font-semibold text-blue-900 dark:text-white mb-3">Key Features</h4>
                       <div className="flex flex-wrap gap-2">
                         {product.features.map((feature, index) => (
-                          <span
+                          <motion.span
                             key={index}
-                            className="px-3 py-1 bg-blue-50 text-blue-700 text-sm rounded-full"
+                            initial={{ opacity: 0, scale: 0 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: index * 0.1 }}
+                            whileHover={{ scale: 1.1 }}
+                            className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full"
                           >
                             {feature}
-                          </span>
+                          </motion.span>
                         ))}
                       </div>
                     </div>
 
                     {/* Stats */}
                     <div className="mb-6">
-                      <h4 className="text-lg font-semibold text-blue-900 mb-3">Statistics</h4>
+                      <h4 className="text-lg font-semibold text-blue-900 dark:text-white mb-3">Statistics</h4>
                       <div className="grid grid-cols-3 gap-4">
                         {Object.entries(product.stats).map(([key, value], index) => (
-                          <div key={index} className="text-center">
-                            <div className="text-2xl font-bold text-cyan-600">{value}</div>
-                            <div className="text-sm text-gray-500 capitalize">{key}</div>
-                          </div>
+                          <motion.div 
+                            key={index} 
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ delay: index * 0.1, type: "spring" }}
+                            className="text-center"
+                          >
+                            <motion.div 
+                              whileHover={{ scale: 1.2 }}
+                              className="text-2xl font-bold text-cyan-600 dark:text-cyan-400"
+                            >
+                              {value}
+                            </motion.div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400 capitalize">{key}</div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
@@ -181,7 +242,9 @@ const Products = () => {
                         </div>
                       </div>
                       
-                      <a
+                      <motion.a
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         href={product.url}
                         target={product.url.startsWith('http') ? '_blank' : '_self'}
                         rel={product.url.startsWith('http') ? 'noopener noreferrer' : ''}
@@ -193,32 +256,94 @@ const Products = () => {
                         ) : (
                           <ArrowRight className="ml-2 h-4 w-4" />
                         )}
-                      </a>
+                      </motion.a>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-white dark:bg-gray-800 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
+          >
+            {[
+              { icon: Users, value: '50K+', label: 'Global Users', color: 'from-blue-500 to-cyan-500' },
+              { icon: Star, value: '4.8', label: 'Average Rating', color: 'from-yellow-500 to-orange-500' },
+              { icon: Zap, value: '99.9%', label: 'Uptime SLA', color: 'from-green-500 to-emerald-500' }
+            ].map((stat, index) => {
+              const IconComponent = stat.icon;
+              return (
+                <motion.div key={index} variants={fadeInUp} className="group">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 360 }}
+                    className={`flex items-center justify-center w-20 h-20 bg-gradient-to-r ${stat.color} rounded-full mx-auto mb-4 shadow-glow`}
+                  >
+                    <IconComponent className="w-10 h-10 text-white" />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ delay: index * 0.1 + 0.5, type: "spring" }}
+                    className="text-4xl font-bold text-gray-900 dark:text-white mb-2"
+                  >
+                    {stat.value}
+                  </motion.div>
+                  <div className="text-gray-600 dark:text-gray-300 font-medium text-lg">{stat.label}</div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-blue-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Need a Custom Solution?
-          </h2>
-          <p className="text-xl text-blue-200 mb-8 max-w-2xl mx-auto">
-            Our team can develop tailored solutions to meet your specific business requirements.
-          </p>
-          <a
-            href="/contact"
-            className="inline-flex items-center px-8 py-4 bg-cyan-400 text-blue-900 font-semibold rounded-lg hover:bg-cyan-300 transition-colors shadow-lg"
+      <section className="relative py-20 bg-blue-900 dark:bg-gray-900 overflow-hidden">
+        <div className="absolute inset-0">
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-10 -right-10 w-40 h-40 border border-white/20 rounded-full"
+          />
+          <motion.div
+            animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute -bottom-10 -left-10 w-32 h-32 border border-cyan-400/30 rounded-full"
+          />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            Contact Our Team
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </a>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Need a Custom Solution?
+            </h2>
+            <p className="text-xl text-blue-200 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+              Our team can develop tailored solutions to meet your specific business requirements.
+            </p>
+            <motion.a
+              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
+              whileTap={{ scale: 0.95 }}
+              href="/contact"
+              className="inline-flex items-center px-8 py-4 bg-cyan-400 text-blue-900 font-semibold rounded-lg hover:bg-cyan-300 transition-colors shadow-lg"
+            >
+              Contact Our Team
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </motion.a>
+          </motion.div>
         </div>
       </section>
     </div>

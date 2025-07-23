@@ -44,46 +44,42 @@ const Navigation = () => {
             {/* Products Dropdown */}
             <div className="relative">
               <button
-                onMouseEnter={() => setIsProductsOpen(true)}
-                onMouseLeave={() => setIsProductsOpen(false)}
+                onClick={() => setIsProductsOpen(!isProductsOpen)}
                 className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive('/products') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400'
                 }`}
               >
                 Products
-                <ChevronDown className="ml-1 h-4 w-4" />
+                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {isProductsOpen && (
-                <div
-                  onMouseEnter={() => setIsProductsOpen(true)}
-                  onMouseLeave={() => setIsProductsOpen(false)}
-                  className="absolute top-full left-0 mt-1 w-64 bg-white rounded-md shadow-lg border border-gray-200 py-2"
-                >
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-md shadow-lg border border-gray-200 py-2">
+                  <Link
+                    to="/products"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-cyan-400"
+                    onClick={() => setIsProductsOpen(false)}
+                  >
+                    View All Products
+                  </Link>
+                  <hr className="my-2" />
                   {products.map((product, index) => (
                     <a
                       key={index}
                       href={product.url}
-                      target={product.url.startsWith('http') ? '_blank' : '_self'}
-                      rel={product.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-cyan-400 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-cyan-400"
+                      onClick={() => setIsProductsOpen(false)}
                     >
                       <div className="font-medium">{product.name}</div>
                       <div className="text-xs text-gray-500">{product.description}</div>
                     </a>
                   ))}
-                  <div className="border-t border-gray-200 mt-2 pt-2">
-                    <Link
-                      to="/products"
-                      className="block px-4 py-2 text-sm font-medium text-cyan-400 hover:bg-blue-50 transition-colors"
-                    >
-                      View All Products
-                    </Link>
-                  </div>
                 </div>
               )}
             </div>
-
+            
             <Link
               to="/about"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -121,8 +117,8 @@ const Navigation = () => {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               to="/"
-              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                isActive('/') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400'
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                isActive('/') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400 hover:bg-gray-50'
               }`}
               onClick={() => setIsOpen(false)}
             >
@@ -131,8 +127,8 @@ const Navigation = () => {
             
             <Link
               to="/products"
-              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                isActive('/products') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400'
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                isActive('/products') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400 hover:bg-gray-50'
               }`}
               onClick={() => setIsOpen(false)}
             >
@@ -141,8 +137,8 @@ const Navigation = () => {
             
             <Link
               to="/about"
-              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                isActive('/about') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400'
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                isActive('/about') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400 hover:bg-gray-50'
               }`}
               onClick={() => setIsOpen(false)}
             >
@@ -151,5 +147,34 @@ const Navigation = () => {
             
             <Link
               to="/contact"
-              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                isActive('/contact') ? 'text-cyan-400
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                isActive('/contact') ? 'text-cyan-400 bg-blue-50' : 'text-gray-700 hover:text-cyan-400 hover:bg-gray-50'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              Contact
+            </Link>
+            
+            <div className="border-t border-gray-200 pt-2 mt-2">
+              <div className="px-3 py-2 text-sm font-medium text-gray-500">External Products</div>
+              {products.map((product, index) => (
+                <a
+                  key={index}
+                  href={product.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-3 py-2 text-sm text-gray-700 hover:text-cyan-400 hover:bg-gray-50"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {product.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+};
+
+export default Navigation;

@@ -233,4 +233,20 @@ const Contact = () => {
                             href={`mailto:${dept.email}`}
                             className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
                           >
-                            {dept.
+                            {dept.email}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Contact;

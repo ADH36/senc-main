@@ -168,4 +168,83 @@ const About = () => {
               const IconComponent = value.icon;
               return (
                 <div key={index} className="text-center group">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-900 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4 group
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-900 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-blue-900 mb-3">{value.title}</h3>
+                  <p className="text-gray-600">{value.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+              Our Journey
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              From our founding to today, here are the key milestones that have shaped SENC.
+            </p>
+          </div>
+          
+          <div className="relative">
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-cyan-200"></div>
+            <div className="space-y-12">
+              {timeline.map((item, index) => (
+                <div key={index} className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
+                  <div className="flex-1 px-8">
+                    <div className={`bg-white p-6 rounded-lg shadow-lg ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                      <div className="text-2xl font-bold text-cyan-600 mb-2">{item.year}</div>
+                      <h3 className="text-xl font-semibold text-blue-900 mb-3">{item.title}</h3>
+                      <p className="text-gray-600">{item.description}</p>
+                    </div>
+                  </div>
+                  <div className="w-4 h-4 bg-cyan-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                  <div className="flex-1"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+              Meet Our Team
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              The brilliant minds behind SENC's innovative solutions.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {team.map((member, index) => (
+              <div key={index} className="text-center group">
+                <div className="relative mb-6">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-32 h-32 rounded-full mx-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-blue-900 mb-2">{member.name}</h3>
+                <p className="text-cyan-600 font-medium mb-3">{member.role}</p>
+                <p className="text-gray-600 text-sm">{member.bio}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default About;

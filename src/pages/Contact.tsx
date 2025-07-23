@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, User, MessageSquare, Globe, Shield, Zap } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, User, MessageSquare, Globe, Shield, Zap, Users } from 'lucide-react';
 
 const Contact = () => {
   const fadeInUp = {

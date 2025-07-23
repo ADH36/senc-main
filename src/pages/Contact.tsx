@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, User, MessageSquare, Globe, Shield, Zap, Users } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, User, MessageSquare, Globe, Shield, Zap, Users, Headphones, Calendar, Ticket, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
 import MobileContact from '@/components/MobileContact';
 import { useMobile } from '@/hooks/useMobile';
 
@@ -24,7 +24,34 @@ const Contact = () => {
     email: '',
     company: '',
     subject: '',
-    message: ''
+    message: '',
+    department: '',
+    priority: 'medium',
+    contactMethod: 'email'
+  });
+  const [showAppointmentBooking, setShowAppointmentBooking] = useState(false);
+  const [showTicketSystem, setShowTicketSystem] = useState(false);
+  const [appointmentData, setAppointmentData] = useState({
+    date: '',
+    time: '',
+    duration: '30',
+    purpose: ''
+  });
+  const [ticketData, setTicketData] = useState({
+    category: '',
+    priority: 'medium',
+    description: '',
+    attachments: [],
+    type: '',
+    subject: ''
+  });
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const [showTicketModal, setShowTicketModal] = useState(false);
+  const [appointmentDataModal, setAppointmentDataModal] = useState({
+    department: '',
+    date: '',
+    time: '',
+    purpose: ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -37,7 +64,16 @@ const Contact = () => {
     // Handle form submission here
     console.log('Form submitted:', formData);
     // Reset form
-    setFormData({ name: '', email: '', company: '', subject: '', message: '' });
+    setFormData({ 
+      name: '', 
+      email: '', 
+      company: '', 
+      subject: '', 
+      message: '', 
+      department: '', 
+      priority: 'medium', 
+      contactMethod: 'email' 
+    });
   };
 
   const mobile = useMobile();
@@ -78,23 +114,58 @@ const Contact = () => {
 
   const departments = [
     {
-      icon: Users,
-      title: 'General Inquiries',
-      email: 'info@senc.com',
-      description: 'For general questions and information'
-    },
-    {
+      id: 'general',
+      name: 'General Inquiries',
+      email: 'info@senc.in',
+      phone: '+91 98765 43210',
       icon: MessageSquare,
-      title: 'Sales',
-      email: 'sales@senc.com',
-      description: 'Interested in our products and services'
+      description: 'General questions and information',
+      responseTime: '24 hours',
+      availability: 'Mon-Fri 9AM-6PM IST'
     },
     {
+      id: 'sales',
+      name: 'Sales',
+      email: 'sales@senc.in',
+      phone: '+91 98765 43211',
+      icon: Users,
+      description: 'Product demos and pricing',
+      responseTime: '2 hours',
+      availability: 'Mon-Fri 9AM-8PM IST'
+    },
+    {
+      id: 'support',
+      name: 'Support',
+      email: 'support@senc.in',
+      phone: '+91 98765 43212',
+      icon: Headphones,
+      description: 'Technical assistance and help',
+      responseTime: '1 hour',
+      availability: '24/7'
+    },
+    {
+      id: 'partnerships',
+      name: 'Partnerships',
+      email: 'partnerships@senc.in',
+      phone: '+91 98765 43213',
       icon: Globe,
-      title: 'Support',
-      email: 'support@senc.com',
-      description: 'Technical support and assistance'
+      description: 'Business partnerships and collaborations',
+      responseTime: '48 hours',
+      availability: 'Mon-Fri 10AM-5PM IST'
     }
+  ];
+
+  const contactMethods = [
+    { id: 'email', name: 'Email', icon: Mail },
+    { id: 'phone', name: 'Phone Call', icon: Phone },
+    { id: 'meeting', name: 'Video Meeting', icon: Calendar }
+  ];
+
+  const priorities = [
+    { id: 'low', name: 'Low', color: 'green' },
+    { id: 'medium', name: 'Medium', color: 'yellow' },
+    { id: 'high', name: 'High', color: 'orange' },
+    { id: 'urgent', name: 'Urgent', color: 'red' }
   ];
 
   return (
@@ -134,6 +205,115 @@ const Contact = () => {
               Ready to transform your business with our innovative solutions? We\'d love to hear from you.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Smart Contact Routing */}
+      <section className="py-16 bg-white dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Choose How You'd Like to Connect
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Select the best way to reach us based on your needs and get routed to the right team
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <motion.button
+              variants={fadeInUp}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+              onClick={() => setShowAppointmentModal(true)}
+              className="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 hover:shadow-lg transition-all duration-300 group"
+            >
+              <Calendar className="w-12 h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Book a Meeting</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">Schedule a personalized consultation</p>
+              <div className="flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium">
+                Schedule Now <ArrowRight className="w-4 h-4 ml-2" />
+              </div>
+            </motion.button>
+
+            <motion.button
+              variants={fadeInUp}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              onClick={() => setShowTicketModal(true)}
+              className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border border-green-200 dark:border-green-800 hover:shadow-lg transition-all duration-300 group"
+            >
+              <Ticket className="w-12 h-12 text-green-600 dark:text-green-400 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Support Ticket</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">Get technical help and track progress</p>
+              <div className="flex items-center justify-center text-green-600 dark:text-green-400 font-medium">
+                Create Ticket <ArrowRight className="w-4 h-4 ml-2" />
+              </div>
+            </motion.button>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl border border-purple-200 dark:border-purple-800"
+            >
+              <MessageSquare className="w-12 h-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Quick Contact</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">Send a message using the form below</p>
+              <div className="flex items-center justify-center text-purple-600 dark:text-purple-400 font-medium">
+                Scroll Down <ArrowRight className="w-4 h-4 ml-2" />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Department Cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {departments.map((dept, index) => {
+              const IconComponent = dept.icon;
+              return (
+                <motion.div
+                  key={dept.id}
+                  variants={fadeInUp}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                  onClick={() => setFormData(prev => ({ ...prev, department: dept.id }))}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <IconComponent className="w-8 h-8 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300" />
+                    {formData.department === dept.id && (
+                      <CheckCircle className="w-6 h-6 text-green-500" />
+                    )}
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{dept.name}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">{dept.description}</p>
+                  <div className="space-y-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-3 h-3" />
+                      <span>Response: {dept.responseTime}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-3 h-3" />
+                      <span>{dept.availability}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -261,26 +441,87 @@ const Contact = () => {
                     />
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
+                    <label htmlFor="department" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Department *
+                    </label>
+                    <select
+                      id="department"
+                      name="department"
+                      value={formData.department}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+                    >
+                      <option value="">Select Department</option>
+                      {departments.map((dept) => (
+                        <option key={dept.id} value={dept.id}>
+                          {dept.name}
+                        </option>
+                      ))}
+                    </select>
+                  </motion.div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
+                    <label htmlFor="priority" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Priority
+                    </label>
+                    <select
+                      id="priority"
+                      name="priority"
+                      value={formData.priority}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+                    >
+                      {priorities.map((priority) => (
+                        <option key={priority.id} value={priority.id}>
+                          {priority.name}
+                        </option>
+                      ))}
+                    </select>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
                     <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Subject *
                     </label>
-                    <select
+                    <input
+                      type="text"
                       id="subject"
                       name="subject"
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                    >
-                      <option value="">Select a subject</option>
-                      <option value="general">General Inquiry</option>
-                      <option value="sales">Sales</option>
-                      <option value="support">Technical Support</option>
-                      <option value="partnership">Partnership</option>
-                      <option value="careers">Careers</option>
-                    </select>
+                      placeholder="Brief description of your inquiry"
+                    />
                   </motion.div>
                 </div>
+
+                <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Preferred Contact Method
+                  </label>
+                  <div className="flex gap-4">
+                    {contactMethods.map((method) => {
+                      const IconComponent = method.icon;
+                      return (
+                        <label key={method.id} className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="contactMethod"
+                            value={method.id}
+                            checked={formData.contactMethod === method.id}
+                            onChange={handleInputChange}
+                            className="text-primary-600 focus:ring-primary-500"
+                          />
+                          <IconComponent className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                          <span className="text-gray-700 dark:text-gray-300">{method.name}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </motion.div>
 
                 <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -300,6 +541,27 @@ const Contact = () => {
                     />
                   </div>
                 </motion.div>
+
+                {/* Smart Routing Info */}
+                {formData.department && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+                  >
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                      <div>
+                        <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+                          Your message will be routed to: {departments.find(d => d.id === formData.department)?.name}
+                        </h4>
+                        <p className="text-sm text-blue-700 dark:text-blue-300">
+                          Expected response time: {departments.find(d => d.id === formData.department)?.responseTime}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
 
                 <motion.button
                   type="submit"
@@ -356,6 +618,193 @@ const Contact = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Appointment Booking Modal */}
+      {showAppointmentModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Book Appointment</h3>
+              <button
+                onClick={() => setShowAppointmentModal(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                ×
+              </button>
+            </div>
+            <form className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Department
+                </label>
+                <select
+                  value={appointmentDataModal.department}
+                  onChange={(e) => setAppointmentDataModal({...appointmentDataModal, department: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                  <option value="">Select Department</option>
+                  {departments.map((dept) => (
+                    <option key={dept.id} value={dept.id}>{dept.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Date
+                </label>
+                <input
+                  type="date"
+                  value={appointmentDataModal.date}
+                  onChange={(e) => setAppointmentDataModal({...appointmentDataModal, date: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Time
+                </label>
+                <select
+                  value={appointmentDataModal.time}
+                  onChange={(e) => setAppointmentDataModal({...appointmentDataModal, time: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                  <option value="">Select Time</option>
+                  <option value="09:00">9:00 AM</option>
+                  <option value="10:00">10:00 AM</option>
+                  <option value="11:00">11:00 AM</option>
+                  <option value="14:00">2:00 PM</option>
+                  <option value="15:00">3:00 PM</option>
+                  <option value="16:00">4:00 PM</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Purpose
+                </label>
+                <textarea
+                  value={appointmentDataModal.purpose}
+                  onChange={(e) => setAppointmentDataModal({...appointmentDataModal, purpose: e.target.value})}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="Brief description of the meeting purpose"
+                ></textarea>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowAppointmentModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Book Appointment
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Support Ticket Modal */}
+      {showTicketModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Create Support Ticket</h3>
+              <button
+                onClick={() => setShowTicketModal(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                ×
+              </button>
+            </div>
+            <form className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Issue Type
+                </label>
+                <select
+                  value={ticketData.type}
+                  onChange={(e) => setTicketData({...ticketData, type: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                  <option value="">Select Issue Type</option>
+                  <option value="technical">Technical Issue</option>
+                  <option value="billing">Billing Question</option>
+                  <option value="feature">Feature Request</option>
+                  <option value="bug">Bug Report</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Priority
+                </label>
+                <select
+                  value={ticketData.priority}
+                  onChange={(e) => setTicketData({...ticketData, priority: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                  {priorities.map((priority) => (
+                    <option key={priority.id} value={priority.id}>{priority.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  value={ticketData.subject}
+                  onChange={(e) => setTicketData({...ticketData, subject: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="Brief description of the issue"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Description
+                </label>
+                <textarea
+                  value={ticketData.description}
+                  onChange={(e) => setTicketData({...ticketData, description: e.target.value})}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="Detailed description of the issue"
+                ></textarea>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowTicketModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Create Ticket
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
